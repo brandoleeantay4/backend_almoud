@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo Tenant (Restaurante)
+model Tenant {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  subdomain   String   @unique // "latrattoria" para latrattoria@almoud.pe
+  name        String   // "La Trattoria Restaurant"
+  logo        String?
+  plan        String   @default("basic") // basic, premium, enterprise
+  status      String   @default("active") // active, suspended, cancelled
+  
+  settings    Json     @default("{\"currency\":\"PEN\",\"timezone\":\"America/Lima\",\"language\":\"es\"}")
+  
+  subscription Json    @default("{\"startDate\":null,\"endDate\":null,\"billing\":\"monthly\"}")
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relaciones
+  users       User[]
+  roles       Role[]
+  
+  @@map("tenants")
+}
+
+// Modelo User mejorado
+model User {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  email        String    @unique
+  name         String
+  lastname     String    // NUEVO CAMPO
+  password     String
+  profileImage String?   // NUEVO CAMPO - URL de la imagen
+  role         String    @default("user")
+  
+  // Multi-tenancy
+  tenantId     String?   @db.ObjectId
+  tenant       Tenant?   @relation(fields: [tenantId], references: [id])
+  
+  // RBAC
+  roleId       String?   @db.ObjectId
+  assignedRole Role?     @relation(fields: [roleId], references: [id])
+  permissions  String[]  @default([]) // Permisos adicionales específicos
+  
+  // Metadata
+  createdBy    String?   @db.ObjectId
+  isActive     Boolean   @default(true)
+  lastLogin    DateTime?
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  
+  @@map("users")
+}
+
+// Modelo Role para RBAC
+model Role {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   // "Cajero", "Cocinero", "Administrador"
+  description String?
+  
+  // Multi-tenancy
+  tenantId    String   @db.ObjectId
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  
+  // Permisos estructurados
+  permissions Json     @default("{}")
+  
+  // Metadata
+  createdBy   String   @db.ObjectId
+  isCustom    Boolean  @default(true) // false para roles del sistema
+  isActive    Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relaciones
+  users       User[]
+  
+  @@unique([name, tenantId]) // Nombres únicos por tenant
+  @@map("roles")
+}
+
+// Modelo Ingredient con multi-tenancy
+model Ingredient {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  category    String
+  unit        String   // kg, gr, lt, ml, etc.
+  costPerUnit Float
+  supplier    String?
+  
+  // Multi-tenancy
+  tenantId    String   @db.ObjectId
+  
+  // Metadata
+  createdBy   String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([name, tenantId])
+  @@map("ingredients")
+}
+
+// Modelo Recipe con multi-tenancy
+model Recipe {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  category    String
+  servings    Int      @default(1)
+  
+  // Costos
+  totalCost   Float    @default(0)
+  costPerServing Float @default(0)
+  sellingPrice Float?
+  
+  // Multi-tenancy
+  tenantId    String   @db.ObjectId
+  
+  // Metadata
+  createdBy   String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([name, tenantId])
+  @@map("recipes")
+}
