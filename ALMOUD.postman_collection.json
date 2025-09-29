@@ -1,0 +1,620 @@
+{
+	"info": {
+		"_postman_id": "03adb46a-3917-4133-8b6d-38d5dffe7a00",
+		"name": "ALMOUD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48828801",
+		"_collection_link": "https://aderly28-04-9253328.postman.co/workspace/aderly-torres-arteaga's-Workspa~e826a2ec-9a44-45ba-8d48-322c65aed8fd/collection/48828801-03adb46a-3917-4133-8b6d-38d5dffe7a00?action=share&source=collection_link&creator=48828801"
+	},
+	"item": [
+		{
+			"name": "Registro",
+			"item": [
+				{
+					"name": "Super Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"superadmin3@almoud.pe\",\r\n  \"password\": \"super123\",\r\n  \"name\": \"Super Admin\",\r\n  \"lastname\": \"Almoud\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tenant User Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"maria@latrattoria.almoud.pe\",\r\n  \"password\": \"maria123\",\r\n  \"name\": \"María\",\r\n  \"lastname\": \"González\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Super Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@almoud.pe\",\r\n  \"password\": \"superadmin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tenant User Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@latrattoria.almoud.pe\",\r\n  \"password\": \"latrattoria123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tenant User Regular",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"cajero@latrattoria.almoud.pe\",\r\n  \"password\": \"user123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Perfil",
+			"item": [
+				{
+					"name": "Tenant User Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TENANT_ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/profile",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tenant User Super Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SUPER_ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/profile",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Upload Profile Image",
+			"item": [
+				{
+					"name": "Update Image Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGQ3MjliMDU1MjBlMzcyN2NkZGE5YmUiLCJlbWFpbCI6ImFkbWluQGFsbW91ZC5wZSIsInRlbmFudElkIjpudWxsLCJpc1N1cGVyQWRtaW4iOnRydWUsImlhdCI6MTc1ODk5ODU0OSwiZXhwIjoxNzU5MDg0OTQ5fQ.VC1NuEePqxeYYvg8STJEYlaxXy1qnqqUmy9sO-Mbe0Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Valentina/Pictures/XDXDXD.webp"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/upload-profile-image",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"upload-profile-image"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Ver Roles del Tenant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/roles",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Rol Personalizado",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGQ3MjliMDU1MjBlMzcyN2NkZGE5YmUiLCJlbWFpbCI6ImFkbWluQGFsbW91ZC5wZSIsInRlbmFudElkIjpudWxsLCJpc1N1cGVyQWRtaW4iOnRydWUsImlhdCI6MTc1ODk5ODU0OSwiZXhwIjoxNzU5MDg0OTQ5fQ.VC1NuEePqxeYYvg8STJEYlaxXy1qnqqUmy9sO-Mbe0Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Cajero\",\r\n  \"description\": \"Acceso a caja y ventas\",\r\n  \"permissions\": {\r\n    \"dashboard\": { \"view\": true },\r\n    \"orders\": { \"view\": true, \"create\": true, \"edit\": true },\r\n    \"inventory\": { \"view\": true }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/roles",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Rol",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Super Cajero\",\r\n  \"permissions\": {\r\n    \"dashboard\": { \"view\": true },\r\n    \"orders\": { \"view\": true, \"create\": true, \"edit\": true, \"delete\": true }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/roles/68d834fcc1a12ba39e2f18a5",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"roles",
+								"68d834fcc1a12ba39e2f18a5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tenant Management",
+			"item": [
+				{
+					"name": "Crear nuevo tenant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SUPERADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"subdomain\": \"pizzamaria\",\r\n  \"name\": \"Pizza Maria Restaurant\",\r\n  \"plan\": \"premium\",\r\n  \"adminEmail\": \"admin@pizzamaria.almoud.pe\",\r\n  \"adminPassword\": \"pizzamaria123\",\r\n  \"adminName\": \"Mario\",\r\n  \"adminLastname\": \"Rossi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/tenants",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"tenants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Tenants",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SUPERADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/tenants",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"tenants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Un Tenant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SUPERADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tenants/68d84e2b9ea65b5288b395ae/stats",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tenants",
+								"68d84e2b9ea65b5288b395ae",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar Estado Tenant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SUPERADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"action\": \"deactivate\" // \"action\": \"activate\" // \"action\": \"suspend\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tenants/68d84e2b9ea65b5288b395ae/status",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tenants",
+								"68d84e2b9ea65b5288b395ae",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Tenant",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gestion de Usuarios",
+			"item": [
+				{
+					"name": "Crear Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"brando@latrattoria.almoud.pe\",\r\n  \"password\": \"brando123\",\r\n  \"name\": \"María\",\r\n  \"lastname\": \"González\",\r\n  \"roleId\": \"68d834fcc1a12ba39e2f18a5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Usuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/users",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asignar Rol",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roleId\": \"68d834fcc1a12ba39e2f18a5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/users/68d729b25520e3727cdda9c0/role",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"users",
+								"68d729b25520e3727cdda9c0",
+								"role"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

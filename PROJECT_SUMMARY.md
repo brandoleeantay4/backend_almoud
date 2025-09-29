@@ -208,42 +208,48 @@ model Recipe {
 
 ---
 
-## 📡 API ENDPOINTS IMPLEMENTADOS (18 TOTAL)
+📡 API ENDPOINTS IMPLEMENTADOS (20 TOTAL)
+Basado en el análisis completo de tu código actual:
 
-### **🔐 AUTENTICACIÓN** (`/api/auth`)
-| Endpoint | Método | Descripción | Estado |
-|----------|--------|-------------|--------|
-| `/register` | POST | Registro multi-tenant automático | ✅ 100% |
-| `/login` | POST | Login con detección de tipo | ✅ 100% |
-| `/profile` | GET | Perfil completo del usuario | ✅ 100% |
-| `/upload-profile-image` | POST | Upload imagen procesada | ✅ 100% |
+🔐 AUTENTICACIÓN (/api/auth)
+Endpoint	Método	Descripción	Controlador	Estado
+/register	POST	Registro multi-tenant automático	authController.register	✅ 100%
+/login	POST	Login con detección automática de tenant	authController.login	✅ 100%
+/profile	GET	Perfil completo con rol y tenant	authController.getProfile	✅ 100%
+/upload-profile-image	POST	Upload con Sharp + Cloudinary	authController.uploadProfileImage	✅ 100%
 
-### **🏢 GESTIÓN DE TENANTS** (`/api/tenants`) - Solo Super Admin
-| Endpoint | Método | Descripción | Estado |
-|----------|--------|-------------|--------|
-| `/` | GET | Lista todos los restaurantes | ✅ 100% |
-| `/` | POST | Crear restaurante completo | ✅ 100% |
-| `/:id/stats` | GET | Estadísticas detalladas | ✅ 100% |
-| `/:id/status` | PATCH | Activar/Suspender/Desactivar | ✅ 100% |
-| `/:id` | PUT | Actualizar configuraciones | ✅ 100% |
-| `/:id` | DELETE | Eliminar restaurante | ✅ 100% |
+🏢 GESTIÓN DE TENANTS (/api/tenants) - Solo Super Admin
+Endpoint	Método	Descripción	Controlador	Estado
+/	GET	Lista todos los restaurantes	tenantController.getAllTenants	✅ 100%
+/	POST	Crear restaurante + admin + roles	tenantController.createTenant	✅ 100%
+/:tenantId/stats	GET	Estadísticas detalladas del tenant	tenantController.getTenantStats	✅ 100%
+/:tenantId	PUT	Actualizar configuraciones	tenantController.updateTenant	✅ 100%
+/:tenantId/status	PATCH	Activar/Suspender/Desactivar	tenantController.toggleTenantStatus	✅ 100%
+/:tenantId	DELETE	Eliminar restaurante completo	tenantController.deleteTenant	✅ 100%
 
-### **👥 GESTIÓN DE ROLES** (`/api/roles`) - Admin/SuperAdmin  
-| Endpoint | Método | Descripción | Estado |
-|----------|--------|-------------|--------|
-| `/` | GET | Roles del tenant actual | ✅ 100% |
-| `/` | POST | Crear rol personalizado | ✅ 100% |
-| `/:roleId` | PUT | Actualizar rol | ✅ 100% |
-| `/:roleId` | DELETE | Eliminar rol | ✅ 100% |
-| `/permissions` | GET | Matriz de permisos | ✅ 100% |
+👥 GESTIÓN DE ROLES (/api/roles) - Con RBAC
+Endpoint	Método	Descripción	Controlador	Estado
+/	GET	Roles del tenant con usuarios	roleController.getRoles	✅ 100%
+/	POST	Crear rol personalizado	roleController.createRole	✅ 100%
+/:roleId	PUT	Actualizar permisos del rol	roleController.updateRole	✅ 100%
+/:roleId	DELETE	Eliminar rol (si no tiene usuarios)	roleController.deleteRole	✅ 100%
+/permissions	GET	Matriz completa de permisos	roleController.getPermissionMatrix	✅ 100%
 
-### **👤 GESTIÓN DE USUARIOS** (`/api/users`) - Admin/SuperAdmin
-| Endpoint | Método | Descripción | Estado |
-|----------|--------|-------------|--------|
-| `/` | GET | Usuarios del tenant | ✅ 100% |
-| `/` | POST | Crear usuario con rol | ✅ 100% |
-| `/:userId/role` | PUT | Asignar/cambiar rol | ✅ 100% |
-| `/:userId/status` | PUT | Activar/desactivar | ✅ 100% |
+👤 GESTIÓN DE USUARIOS (/api/users) - Multi-tenant
+Endpoint	Método	Descripción	Controlador	Estado
+/	GET	Usuarios del tenant (filtrado automático)	userManagementController.getTenantUsers	✅ 100%
+/	POST	Crear usuario con rol asignado	userManagementController.createTenantUser	✅ 100%
+/:userId/role	PUT	Asignar/cambiar rol del usuario	userManagementController.assignRoleToUser	✅ 100%
+/:userId/status	PUT	Activar/desactivar usuario	userManagementController.toggleUserStatus	✅ 100%
+⚕️ SISTEMA (/api)
+Endpoint	Método	Descripción	Ubicación	Estado
+/health	GET	Health check del servidor	app.ts	✅ 100%
+
+🚧 ENDPOINTS PREPARADOS (PRÓXIMAMENTE)
+Endpoint	Método	Descripción	Archivo Ruta	Estado
+/ingredients	GET/POST	Gestión de ingredientes	routes/ingredients.ts	🔄 Pendiente
+/recipes	GET/POST	Gestión de recetas	routes/recipes.ts	🔄 Pendiente
+
 
 ---
 

@@ -6,17 +6,30 @@ import { prisma } from '../app';
 // Obtener usuarios del tenant - CORREGIDO
 export const getTenantUsers = async (req: any, res: Response): Promise<void> => {
   try {
+    let whereClause = {};
+    
+    // SUPER ADMIN: obtiene TODOS los usuarios
+    if (req.isSuperAdmin) {
+      whereClause = {}; // Sin filtros = todos los usuarios
+    } else {
+      // ADMIN/USER: solo usuarios de su tenant
+      whereClause = { tenantId: req.tenantId };
+    }
+
     const users = await prisma.user.findMany({
-      where: { tenantId: req.tenantId },
+      where: whereClause,
       include: {
         assignedRole: {
           select: { id: true, name: true, permissions: true }
+        },
+        tenant: {
+          select: { id: true, name: true, subdomain: true }
         }
       },
       orderBy: { createdAt: 'desc' }
     });
 
-    // Filtrar campos sensibles manualmente
+    // MAPEO COMPLETO con todos los campos necesarios
     const filteredUsers = users.map(user => ({
       id: user.id,
       email: user.email,
@@ -27,16 +40,24 @@ export const getTenantUsers = async (req: any, res: Response): Promise<void> => 
       isActive: user.isActive,
       lastLogin: user.lastLogin,
       createdAt: user.createdAt,
-      assignedRole: user.assignedRole
-      // password NO se incluye
+      updatedAt: user.updatedAt, // ✅ FALTABA
+      tenantId: user.tenantId,    // ✅ FALTABA
+      roleId: user.roleId,        // ✅ FALTABA
+      assignedRole: user.assignedRole,
+      tenant: user.tenant         // ✅ INFORMACIÓN DEL TENANT
     }));
 
-    res.json({ users: filteredUsers });
+    res.json({ 
+      users: filteredUsers,
+      total: filteredUsers.length,
+      context: req.isSuperAdmin ? 'global' : 'tenant'
+    });
   } catch (error) {
     console.error('Error obteniendo usuarios:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
+
 
 // Crear usuario en el tenant
 // Crear usuario en el tenant - CORREGIDO

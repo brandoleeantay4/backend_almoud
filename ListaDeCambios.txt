@@ -1,0 +1,63 @@
+CAMBIOS APLICADOS AL BACKEND 27/09/2025:
+
+ ------------------- userManagementController.ts ----------------------
+
+a.- Con La Finalidad De Obtener De Que Desde El Endpoint "Api/Users" El Superadministrador Y Administrador Obtengan Los Usuarios Con Los Campos Adicionales Y Tener Mas Control Sobre Ellos: Updateat, Tenantid, Roleid, Tenant (Informacion Ddel Tenant)
+
+b.- Con La Finalidad Que El Superadministrador Obtenga Todos Los Usuarios (Sin Filtros) No Importa Si Tienen Asignado Un Tenant.
+
+export const getTenantUsers = async (req: any, res: Response): Promise<void> => {
+  try {
+    let whereClause = {};
+    
+    // SUPER ADMIN: obtiene TODOS los usuarios
+    if (req.isSuperAdmin) {
+      whereClause = {}; // Sin filtros = todos los usuarios
+    } else {
+      // ADMIN/USER: solo usuarios de su tenant
+      whereClause = { tenantId: req.tenantId };
+    }
+
+    const users = await prisma.user.findMany({
+      where: whereClause,
+      include: {
+        assignedRole: {
+          select: { id: true, name: true, permissions: true }
+        },
+        tenant: {
+          select: { id: true, name: true, subdomain: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    // MAPEO COMPLETO con todos los campos necesarios
+    const filteredUsers = users.map(user => ({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      lastname: user.lastname,
+      role: user.role,
+      profileImage: user.profileImage,
+      isActive: user.isActive,
+      lastLogin: user.lastLogin,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt, // ✅ FALTABA
+      tenantId: user.tenantId,    // ✅ FALTABA
+      roleId: user.roleId,        // ✅ FALTABA
+      assignedRole: user.assignedRole,
+      tenant: user.tenant         // ✅ INFORMACIÓN DEL TENANT
+    }));
+
+    res.json({ 
+      users: filteredUsers,
+      total: filteredUsers.length,
+      context: req.isSuperAdmin ? 'global' : 'tenant'
+    });
+  } catch (error) {
+    console.error('Error obteniendo usuarios:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
+
+
